@@ -195,6 +195,12 @@ p {
   width: auto;
 }
 
+/* El logo está pensado para fondo oscuro (blanco). En modo claro
+   se invierte para que quede oscuro y siga siendo visible. */
+[data-theme="light"] .brand img {
+  filter: invert(1);
+}
+
 .brand-mark {
   color: var(--accent);
 }
@@ -546,6 +552,9 @@ p {
 }
 
 .tab-panel img {
+  display: block;
+  width: 100%;
+  height: auto;
   border-radius: var(--radius);
   border: 1px solid var(--border);
   aspect-ratio: 4 / 3;
