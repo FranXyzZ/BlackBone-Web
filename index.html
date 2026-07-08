@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BlackBone Chile— Estudio de creación de sitios web</title>
+<title>BlackBone Chile</title>
 <meta name="description" content="BlackBone diseña y construye sitios web a medida: estructura clara, código ordenado y un proceso pensado para negocios reales.">
 <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -21,9 +21,8 @@
     <div class="container nav">
       <a href="index.html" class="brand">
         <img src="img/logo-placeholder.png" alt="Logo de BlackBone" width="32" height="32">
-        BlackBone Chile
+        <span class="brand-text">BlackBone Chile</span>
       </a>
-
       <ul class="nav-links" data-nav-links>
         <li><a href="index.html" aria-current="page">Inicio</a></li>
         <li><a href="html/servicios.html">Servicios</a></li>
@@ -50,6 +49,54 @@
     </div>
   </header>
 
+  <!-- ==========================================================
+       DOCK INFERIOR "LIQUID GLASS" — SOLO CELULAR.
+       Nuevo, no reemplaza al header de arriba en el HTML: convive
+       con él y JS decide cuál se ve según el scroll y el ancho de
+       pantalla (ver initLiquidDock() en js/script.js).
+       Copia este bloque igual en cada página, ajustando solo los
+       href y cuál <a> lleva aria-current="page" (mismo criterio
+       que el bloque <header> de arriba).
+       ========================================================== -->
+  <nav class="liquid-dock" data-liquid-dock aria-label="Navegación rápida (celular)">
+    <div class="liquid-dock-track" data-liquid-track>
+      <a href="index.html" class="liquid-stop" data-liquid-stop aria-current="page">
+        <svg class="liquid-stop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M4 11.5 12 4l8 7.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M6 10v9h5v-6h2v6h5v-9" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="liquid-stop-label">Inicio</span>
+      </a>
+      <a href="html/servicios.html" class="liquid-stop" data-liquid-stop>
+        <svg class="liquid-stop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="4" y="4" width="7" height="7" rx="1.4"/>
+          <rect x="13" y="4" width="7" height="7" rx="1.4"/>
+          <rect x="4" y="13" width="7" height="7" rx="1.4"/>
+          <rect x="13" y="13" width="7" height="7" rx="1.4"/>
+        </svg>
+        <span class="liquid-stop-label">Servicios</span>
+      </a>
+      <a href="html/proyectos.html" class="liquid-stop" data-liquid-stop>
+        <svg class="liquid-stop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="3.5" y="5" width="17" height="14" rx="1.6"/>
+          <circle cx="9" cy="10.3" r="1.6"/>
+          <path d="M20.5 16.5 15 11l-9.5 8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="liquid-stop-label">Proyectos</span>
+      </a>
+      <a href="html/contacto.html" class="liquid-stop" data-liquid-stop>
+        <svg class="liquid-stop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M4 5.5h16v11H8.5L4 20.5v-4H4Z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="liquid-stop-label">Contacto</span>
+      </a>
+
+      <div class="liquid-bubble" data-liquid-bubble aria-hidden="true">
+        <span class="liquid-bubble-label" data-liquid-bubble-label></span>
+      </div>
+    </div>
+  </nav>
+
   <main>
 
     <!-- ==========================================================
@@ -59,9 +106,8 @@
          ========================================================== -->
     <section class="hero">
       <div class="hero-media">
-        <video autoplay muted loop playsinline poster="video/hero-poster.jpg">
-          <source src="video/videoheader.mp4" type="video/mp4">
-        </video>
+        <video id="video-a" class="hero-video active" autoplay muted loop playsinline poster="video/hero-poster.jpg"></video>
+        <video id="video-b" class="hero-video" autoplay muted loop playsinline poster="video/hero-poster.jpg"></video>
       </div>
 
       <div class="container">
@@ -411,7 +457,7 @@
       </div>
 
       <div class="footer-grid">
-        <span class="footer-note">© 2026 BlackBone Chile — Estudio de sitios web</span>
+        <span class="footer-note">© 2026 BlackBone Chile</span>
         <nav class="footer-links">
           <a href="html/servicios.html">Servicios</a>
           <a href="html/proyectos.html">Proyectos</a>

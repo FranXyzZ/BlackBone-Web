@@ -132,7 +132,7 @@ button:focus-visible {
   font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent);
+  color:#ffffff;
   margin-bottom: 0.9rem;
 }
 
@@ -172,6 +172,7 @@ p {
   background: color-mix(in srgb, var(--bg) 85%, transparent);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
+  transition: background-color 0.35s ease, border-color 0.35s ease, padding-block 0.35s ease;
 }
 
 .nav {
@@ -179,6 +180,20 @@ p {
   align-items: center;
   justify-content: space-between;
   padding-block: 1.1rem;
+  border-radius: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition:
+    background-color 0.45s ease,
+    border-radius 0.45s ease,
+    padding 0.45s ease,
+    border-color 0.45s ease,
+    box-shadow 0.45s ease,
+    backdrop-filter 0.45s ease,
+    gap 0.45s ease;
 }
 
 .brand {
@@ -226,6 +241,55 @@ p {
   display: none;
 }
 
+/* ---- Header flotante tipo "liquid glass" al hacer scroll ---- */
+.site-header.is-compact {
+  background: transparent;
+  border-bottom-color: transparent;
+  padding-block: 0.85rem;
+}
+
+.site-header.is-compact .nav {
+  width: fit-content;
+  max-width: fit-content;
+  margin-inline: auto;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  box-shadow: var(--shadow);
+}
+
+/* Solo el ícono del logo, sin el texto "BlackBone Chile" */
+.site-header.is-compact .brand img {
+  height: 26px;
+}
+
+.site-header.is-compact .brand-text {
+  display: none;
+}
+
+/* Los links se mantienen visibles dentro de la misma píldora,
+   nada de hamburguesa en este modo — SOLO en escritorio.
+   En móvil (<=860px) se respeta el menú hamburguesa normal. */
+@media (min-width: 861px) {
+  .site-header.is-compact .nav-links {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
 /* ---- Botones ---- */
 .btn {
   display: inline-flex;
@@ -256,13 +320,26 @@ p {
 
 .btn-secondary {
   background: transparent;
-  color: var(--text);
+  color: #f4f4f2; /* blanco fijo en modo oscuro, siempre legible */
   border-color: var(--border);
 }
 
 .btn-secondary:hover {
+  background: var(--accent); /* mismo color que usan los rects (stars, process-index, etc.) */
   border-color: var(--accent);
-  color: var(--accent);
+  color: #f4f4f2; /* se mantiene blanco */
+}
+
+/* Modo claro: espejo del comportamiento oscuro */
+[data-theme="light"] .btn-secondary {
+  color: #ffffff; 
+  border-color: var(--border);
+}
+
+[data-theme="light"] .btn-secondary:hover {
+  background: #ffffff;
+  border-color: #141414;
+  color: #141414; /* se mantiene negro sobre fondo blanco */
 }
 
 .btn-row {
@@ -328,10 +405,26 @@ p {
   object-fit: cover;
 }
 
+/* ---- Crossfade de videos del hero ---- */
+.hero-media video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 1.8s ease-in-out; /* fade lento */
+  z-index: 0;
+}
+
+.hero-media video.active {
+  opacity: 1;
+  z-index: 1;
+}
+
 .hero-media::after {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 2;
   background: linear-gradient(180deg, rgba(10, 10, 10, 0.6) 0%, rgba(10, 10, 10, 0.55) 45%, rgba(10, 10, 10, 0.88) 100%);
 }
 
@@ -344,7 +437,7 @@ p {
 }
 
 .hero-content .eyebrow {
-  color: var(--accent-strong);
+  color: #ffffff;
 }
 
 .hero-content h1 {
@@ -871,5 +964,172 @@ p {
 @media (max-width: 560px) {
   .footer-columns {
     grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   DOCK INFERIOR "LIQUID GLASS" — SOLO CELULAR
+   Bloque nuevo y aislado: no toca ninguna regla existente.
+   Comportamiento:
+   - En escritorio no existe (display:none todo el tiempo).
+   - En celular (<=860px) permanece oculto abajo de la pantalla
+     hasta que el usuario baja el scroll; ahí el header de
+     arriba (.site-header) se desliza fuera de vista y este
+     dock aparece flotando abajo, con una burbuja que se
+     arrastra para elegir Inicio / Servicios / Proyectos /
+     Contacto, igual que el tab bar "liquid glass" de iOS.
+   La lógica de mostrar/ocultar y arrastrar vive en
+   initLiquidDock() dentro de js/script.js.
+   ========================================================= */
+.liquid-dock {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  /* El header existente se desliza hacia arriba y desaparece
+     mientras el dock inferior está activo. Fuera de este rango
+     de pantalla el header no se toca en absoluto. */
+  .site-header {
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+  }
+
+  .site-header.is-hidden-mobile {
+    transform: translateY(-110%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .liquid-dock {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 70;
+    padding: 0 0.85rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    transform: translateY(140%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+  }
+
+  .liquid-dock.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Barra ancha, casi de borde a borde, muy transparente:
+     se ve el contenido detrás con blur fuerte, como el
+     tab bar real de iOS (no una píldora angosta). */
+  .liquid-dock-track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 420px;
+    padding: 0.7rem 0.4rem;
+    border-radius: 30px;
+    background: color-mix(in srgb, var(--surface) 28%, transparent);
+    border: 1px solid color-mix(in srgb, white 18%, transparent);
+    backdrop-filter: blur(28px) saturate(200%);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
+    box-shadow:
+      var(--shadow),
+      inset 0 1px 0 color-mix(in srgb, white 22%, transparent),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+    touch-action: none;
+  }
+
+  .liquid-stop {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.28rem;
+    padding-block: 0.3rem;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+  }
+
+  .liquid-stop-icon {
+    width: 23px;
+    height: 23px;
+  }
+
+  .liquid-stop-label {
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .liquid-stop.is-active {
+    color: var(--accent-strong);
+  }
+
+  /* El "chip" que se arrastra: solo envuelve el ícono activo,
+     como en el tab bar de iOS — no toda la columna. Su posición
+     y tamaño los calcula JS en base al ícono real (initLiquidDock). */
+  .liquid-bubble {
+    position: absolute;
+    top: 0.42rem;
+    left: 0;
+    z-index: 1;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--accent) 32%, transparent);
+    box-shadow:
+      inset 0 1px 1px color-mix(in srgb, white 35%, transparent),
+      inset 0 -2px 5px rgba(0, 0, 0, 0.18);
+    transform: translate(0, 0);
+    transition: transform 0.42s cubic-bezier(0.22, 1.28, 0.36, 1), width 0.42s cubic-bezier(0.22, 1.28, 0.36, 1), border-radius 0.25s ease;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  /* Sin transición durante el arrastre: la gota sigue al dedo
+     al instante, cero lag — la fluidez sale de esto, no de CSS. */
+  .liquid-bubble.is-dragging {
+    transition: border-radius 0.15s ease;
+    box-shadow:
+      inset 0 1px 1px color-mix(in srgb, white 45%, transparent),
+      inset 0 -2px 6px rgba(0, 0, 0, 0.22),
+      0 4px 10px rgba(0, 0, 0, 0.25);
+  }
+
+  .liquid-bubble-label {
+    position: absolute;
+    bottom: calc(100% + 0.6rem);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 500;
+    white-space: nowrap;
+    color: var(--text);
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .liquid-bubble.is-dragging .liquid-bubble-label {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liquid-bubble {
+    transition: none;
   }
 }
