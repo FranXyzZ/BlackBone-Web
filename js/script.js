@@ -8,8 +8,6 @@
    4) Acordeón de preguntas frecuentes
    5) Crossfade de videos del hero
    6) Header flotante tipo "liquid glass" al hacer scroll
-   7) Dock inferior "liquid glass" con burbuja arrastrable
-      (solo celular, reemplaza al header cuando bajas)
    ========================================================= */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -19,7 +17,9 @@ document.addEventListener('DOMContentLoaded', function () {
   initFaq();
   initHeroVideoCrossfade();
   initHeaderScrollShrink();
-  initLiquidDock();
+  initSpotlight();
+  initCardTilt();
+  initScrollReveal();
 });
 
 /**
@@ -172,6 +172,96 @@ function initHeroVideoCrossfade() {
 }
 
 /**
+ * "Spotlight" que sigue el mouse sobre una grilla de puntos.
+ * Se activa en cualquier elemento con [data-spotlight] (por ahora
+ * las secciones de intro de servicios.html y contacto.html).
+ * Solo escribe las variables CSS --mx/--my; todo lo visual vive
+ * en .intro-section dentro de styles.css. En touch (sin mouse) o
+ * con "reducir movimiento" activado, se deja el fondo fijo.
+ */
+function initSpotlight() {
+  var targets = document.querySelectorAll('[data-spotlight]');
+  if (!targets.length) return;
+
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
+
+  targets.forEach(function (el) {
+    el.addEventListener('mousemove', function (e) {
+      var rect = el.getBoundingClientRect();
+      var x = ((e.clientX - rect.left) / rect.width) * 100;
+      var y = ((e.clientY - rect.top) / rect.height) * 100;
+      el.style.setProperty('--mx', x + '%');
+      el.style.setProperty('--my', y + '%');
+    });
+  });
+}
+
+/**
+ * Inclinación 3D suave (tilt) para tarjetas [.card] al mover el
+ * mouse encima. Escribe --tilt-x/--tilt-y, que styles.css usa en
+ * la transformación de .card. Rango de inclinación acotado a
+ * pocos grados a propósito, para que se sienta minimalista y no
+ * como un efecto "gamer". Se desactiva con "reducir movimiento".
+ */
+function initCardTilt() {
+  var cards = document.querySelectorAll('.card');
+  if (!cards.length) return;
+
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
+
+  var MAX_TILT = 6; // grados
+
+  cards.forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var rect = card.getBoundingClientRect();
+      var px = (e.clientX - rect.left) / rect.width;  // 0 a 1
+      var py = (e.clientY - rect.top) / rect.height;  // 0 a 1
+
+      var tiltY = (px - 0.5) * (MAX_TILT * 2);
+      var tiltX = (0.5 - py) * (MAX_TILT * 2);
+
+      card.style.setProperty('--tilt-x', tiltX + 'deg');
+      card.style.setProperty('--tilt-y', tiltY + 'deg');
+    });
+
+    card.addEventListener('mouseleave', function () {
+      card.style.setProperty('--tilt-x', '0deg');
+      card.style.setProperty('--tilt-y', '0deg');
+    });
+  });
+}
+
+/**
+ * Aparición suave al hacer scroll para cualquier elemento con
+ * class="reveal" (agrega esta clase donde quieras el efecto:
+ * ya se usa en los .service-item de servicios.html y en las
+ * .card de contacto.html). Usa IntersectionObserver, así que no
+ * cuesta nada de rendimiento mientras el elemento no es visible.
+ */
+function initScrollReveal() {
+  var items = document.querySelectorAll('.reveal');
+  if (!items.length) return;
+
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(function (item) { item.classList.add('is-visible'); });
+    return;
+  }
+
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  items.forEach(function (item) { observer.observe(item); });
+}
+
+/**
  * Convierte el header en una píldora flotante ("liquid glass")
  * cuando el usuario baja de cierto punto de scroll. Al volver
  * arriba, recupera la barra completa. Los links y el logo (solo
@@ -193,204 +283,4 @@ function initHeaderScrollShrink() {
 
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll(); // por si la página carga ya scrolleada
-}
-
-/**
- * DOCK INFERIOR "LIQUID GLASS" (solo celular).
- * Requiere en el HTML un bloque con [data-liquid-dock] que
- * contenga [data-liquid-track] > enlaces [data-liquid-stop]
- * (uno por opción del menú) + un [data-liquid-bubble] con un
- * [data-liquid-bubble-label] adentro. Ver index.html.
- *
- * Comportamiento:
- * - Solo se activa en pantallas <= 860px (mismo corte que el
- *   resto del menú móvil del sitio).
- * - Al bajar el scroll más de SCROLL_THRESHOLD, el header de
- *   arriba se oculta (clase .is-hidden-mobile) y este dock
- *   aparece flotando abajo (clase .is-visible).
- * - La burbuja se puede arrastrar con el dedo (o el mouse, para
- *   probarlo en escritorio simulando un celular) por la barra;
- *   se resalta la opción más cercana en tiempo real y, al
- *   soltar, la burbuja "cae" (spring) sobre esa opción y recién
- *   ahí navega a esa página.
- * - Tocar una opción directamente (sin arrastrar) hace lo mismo:
- *   anima la burbuja hasta ahí y navega.
- */
-function initLiquidDock() {
-  var dock = document.querySelector('[data-liquid-dock]');
-  var track = document.querySelector('[data-liquid-track]');
-  var bubble = document.querySelector('[data-liquid-bubble]');
-  var bubbleLabel = document.querySelector('[data-liquid-bubble-label]');
-  var stops = Array.prototype.slice.call(document.querySelectorAll('[data-liquid-stop]'));
-  var header = document.querySelector('.site-header');
-
-  if (!dock || !track || !bubble || !bubbleLabel || !stops.length || !header) return;
-
-  var MOBILE_QUERY = window.matchMedia('(max-width: 860px)');
-  var SCROLL_THRESHOLD = 80; // px antes de esconder el header y mostrar el dock
-
-  var activeIndex = stops.findIndex(function (s) {
-    return s.getAttribute('aria-current') === 'page';
-  });
-  if (activeIndex < 0) activeIndex = 0;
-
-  // Centro (en px, relativo a la barra) de cada opción.
-  function stopCenters() {
-    var trackRect = track.getBoundingClientRect();
-    return stops.map(function (stop) {
-      var r = stop.getBoundingClientRect();
-      return (r.left + r.width / 2) - trackRect.left;
-    });
-  }
-
-  function nearestIndex(x) {
-    var centers = stopCenters();
-    var nearest = 0;
-    var dist = Infinity;
-    centers.forEach(function (c, i) {
-      var d = Math.abs(c - x);
-      if (d < dist) { dist = d; nearest = i; }
-    });
-    return nearest;
-  }
-
-  function highlight(index) {
-    stops.forEach(function (s, i) { s.classList.toggle('is-active', i === index); });
-    var label = stops[index].querySelector('.liquid-stop-label');
-    if (label) bubbleLabel.textContent = label.textContent;
-  }
-
-  // Mueve el chip para que su CENTRO quede en x (clamp dentro de la barra).
-  // "stretch" es cuánto se movió el dedo desde el frame anterior: con eso
-  // se estira/achica el chip un poco, como una gota real, mientras arrastras.
-  function placeBubbleAt(x, stretch) {
-    var half = bubble.offsetWidth / 2;
-    var min = half;
-    var max = track.clientWidth - half;
-    var clamped = Math.max(min, Math.min(max, x));
-    var amount = stretch ? Math.max(0, Math.min(0.32, Math.abs(stretch) * 0.05)) : 0;
-    bubble.style.borderRadius = (16 + amount * 26) + 'px';
-    bubble.style.transform =
-      'translateX(' + (clamped - half) + 'px) scaleX(' + (1 + amount) + ') scaleY(' + (1 - amount * 0.45) + ')';
-    return clamped;
-  }
-
-  function snapToIndex(index, animate) {
-    var centers = stopCenters();
-    var half = bubble.offsetWidth / 2;
-    var x = Math.max(half, Math.min(track.clientWidth - half, centers[index]));
-    if (!animate) bubble.style.transition = 'none';
-    bubble.style.borderRadius = '';
-    bubble.style.transform = 'translateX(' + (x - half) + 'px)';
-    highlight(index);
-    if (!animate) {
-      void bubble.offsetWidth; // fuerza reflow para aplicar sin transición
-      bubble.style.transition = '';
-    }
-  }
-
-  window.addEventListener('resize', function () { snapToIndex(activeIndex, false); });
-
-  /* ---- Mostrar dock / ocultar header, solo en móvil y al bajar ---- */
-  function onScroll() {
-    if (!MOBILE_QUERY.matches) {
-      dock.classList.remove('is-visible');
-      header.classList.remove('is-hidden-mobile');
-      return;
-    }
-    if (window.scrollY > SCROLL_THRESHOLD) {
-      dock.classList.add('is-visible');
-      header.classList.add('is-hidden-mobile');
-    } else {
-      dock.classList.remove('is-visible');
-      header.classList.remove('is-hidden-mobile');
-    }
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-
-  if (MOBILE_QUERY.addEventListener) {
-    MOBILE_QUERY.addEventListener('change', onScroll);
-  } else if (MOBILE_QUERY.addListener) {
-    MOBILE_QUERY.addListener(onScroll); // compatibilidad con navegadores viejos
-  }
-
-  /* ---- Arrastrar el chip para elegir una opción ---- */
-  var pointerId = null;
-  var isDragging = false;
-  var justDragged = false; // evita doble navegación (arrastre + click posterior)
-  var downX = 0;
-  var lastX = 0;
-
-  track.addEventListener('pointerdown', function (e) {
-    if (!MOBILE_QUERY.matches) return;
-    pointerId = e.pointerId;
-    downX = e.clientX;
-    lastX = e.clientX;
-    isDragging = false;
-  });
-
-  track.addEventListener('pointermove', function (e) {
-    if (pointerId === null || e.pointerId !== pointerId) return;
-
-    if (!isDragging && Math.abs(e.clientX - downX) > 6) {
-      isDragging = true;
-      bubble.classList.add('is-dragging');
-      if (track.setPointerCapture) track.setPointerCapture(pointerId);
-    }
-    if (!isDragging) return;
-
-    e.preventDefault();
-    var trackRect = track.getBoundingClientRect();
-    var x = e.clientX - trackRect.left;
-    var frameDelta = e.clientX - lastX; // cuánto se movió el dedo desde el último frame
-    lastX = e.clientX;
-    placeBubbleAt(x, frameDelta);
-    highlight(nearestIndex(x));
-  }, { passive: false });
-
-  function endDrag(e) {
-    if (pointerId === null || (e.pointerId !== undefined && e.pointerId !== pointerId)) return;
-
-    if (isDragging) {
-      var trackRect = track.getBoundingClientRect();
-      var x = e.clientX - trackRect.left;
-      var index = nearestIndex(x);
-      activeIndex = index;
-      snapToIndex(index, true);
-
-      justDragged = true;
-      var href = stops[index].getAttribute('href');
-      window.setTimeout(function () {
-        if (href) window.location.href = href;
-      }, 240);
-      window.setTimeout(function () { justDragged = false; }, 500); // salvaguarda
-    }
-
-    pointerId = null;
-    isDragging = false;
-    bubble.classList.remove('is-dragging');
-  }
-
-  track.addEventListener('pointerup', endDrag);
-  track.addEventListener('pointercancel', endDrag);
-
-  // Tocar una opción directamente (sin arrastrar) también navega,
-  // con la misma animación de "caída" de la burbuja antes de ir.
-  stops.forEach(function (stop, i) {
-    stop.addEventListener('click', function (e) {
-      e.preventDefault();
-      if (justDragged) { justDragged = false; return; } // ya navegó endDrag()
-
-      activeIndex = i;
-      snapToIndex(i, true);
-      var href = stop.getAttribute('href');
-      window.setTimeout(function () {
-        if (href) window.location.href = href;
-      }, 220);
-    });
-  });
-
-  // Posición inicial de la burbuja (tras el primer layout).
-  window.requestAnimationFrame(function () { snapToIndex(activeIndex, false); });
 }
