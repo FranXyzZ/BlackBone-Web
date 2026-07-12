@@ -1,20 +1,7 @@
-/* =========================================================
-   BLACKBONE — hoja de estilos compartida
-   Este archivo lo usan TODAS las páginas del sitio.
-   Los colores y tipografías viven en variables (:root),
-   así que para ajustar el tema global solo se edita una vez aquí.
-   ========================================================= */
-
-/* ---- Tipografías ---- */
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 :root {
-  /* =======================================================
-     PALETA DE COLORES — edita solo aquí para cambiar
-     los colores de TODO el sitio (ambas páginas, ambos temas).
-     ======================================================= */
 
-  /* Tema oscuro (por defecto): negro neutro, sin tinte azul */
   --bg: #141414;
   --surface: #1c1c1c;
   --surface-alt: #232323;
@@ -22,25 +9,21 @@
   --text: #e9e8e5;
   --text-muted: #9a9a97;
 
-  /* Acento: gris azulado (cámbialo aquí si quieres otro color) */
   --accent: #5b6b7a;
   --accent-strong: #728296;
   --accent-contrast: #f4f4f2;
 
   --shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.6);
 
-  /* Tipografías */
   --font-display: 'Fraunces', Georgia, serif;
   --font-body: 'IBM Plex Sans', Arial, sans-serif;
   --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
 
-  /* Espaciado y forma */
   --radius: 4px;
   --max-width: 1120px;
   --gap: clamp(1.5rem, 3vw, 3rem);
 }
 
-/* Tema claro: se activa poniendo data-theme="light" en <html> */
 [data-theme="light"] {
   --bg: #f5f4f2;
   --surface: #ffffff;
@@ -56,7 +39,6 @@
   --shadow: 0 20px 50px -25px rgba(20, 20, 20, 0.2);
 }
 
-/* ---- Reset básico ---- */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -90,7 +72,6 @@ ul {
   list-style: none;
 }
 
-/* Foco visible para accesibilidad (teclado) */
 a:focus-visible,
 button:focus-visible {
   outline: 2px solid var(--accent);
@@ -104,7 +85,6 @@ button:focus-visible {
   }
 }
 
-/* ---- Utilidades de layout ---- */
 .container {
   width: 100%;
   max-width: var(--max-width);
@@ -121,15 +101,6 @@ button:focus-visible {
   border-bottom: none;
 }
 
-/* ==========================================================
-   SECCIÓN ALTERNA — para romper la sensación de "todo plano"
-   en modo oscuro (y dar contraste sutil también en modo claro).
-   Agrega class="section section--alt" a las secciones que
-   quieras destacar un poco del fondo base. Se recomienda
-   alternar: normal, alt, normal, alt... sin usarla en secciones
-   que ya tienen su propio fondo especial (ej. intro-section
-   con el spotlight, o el hero con video).
-   ========================================================== */
 .section--alt {
   background: var(--surface);
 }
@@ -149,13 +120,10 @@ button:focus-visible {
   margin-bottom: 0.9rem;
 }
 
-/* En modo claro, el eyebrow pasa a oscuro para que se lea sobre fondo claro */
 [data-theme="light"] .eyebrow {
   color: var(--text);
 }
 
-/* Excepción: el eyebrow del hero va sobre el video (siempre oscuro),
-   así que se mantiene blanco incluso en modo claro */
 [data-theme="light"] .hero-content .eyebrow {
   color: #ffffff;
 }
@@ -188,7 +156,53 @@ p {
   max-width: 46ch;
 }
 
-/* ---- Header / navegación ---- */
+.about-section {
+  padding-block: clamp(5rem, 9vw, 8rem);
+}
+
+.about-block {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: clamp(3rem, 7vw, 6rem);
+}
+
+.about-text {
+  max-width: 560px;
+}
+
+.about-text h2 {
+  margin-top: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.about-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-visual img {
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+}
+
+@media (max-width: 640px) {
+  .about-block {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .about-visual {
+    justify-content: flex-start;
+  }
+
+  .about-visual img {
+    max-width: 140px;
+  }
+}
+
 .site-header {
   position: sticky;
   top: 0;
@@ -234,8 +248,6 @@ p {
   width: auto;
 }
 
-/* El logo está pensado para fondo oscuro (blanco). En modo claro
-   se invierte para que quede oscuro y siga siendo visible. */
 [data-theme="light"] .brand img {
   filter: invert(1);
 }
@@ -265,7 +277,6 @@ p {
   display: none;
 }
 
-/* ---- Header flotante tipo "liquid glass" al hacer scroll ---- */
 .site-header.is-compact {
   background: transparent;
   border-bottom-color: transparent;
@@ -286,7 +297,6 @@ p {
   box-shadow: var(--shadow);
 }
 
-/* Solo el ícono del logo, sin el texto "BlackBone Chile" */
 .site-header.is-compact .brand img {
   height: 26px;
 }
@@ -295,9 +305,6 @@ p {
   display: none;
 }
 
-/* Los links se mantienen visibles dentro de la misma píldora,
-   nada de hamburguesa en este modo — SOLO en escritorio.
-   En móvil (<=860px) se respeta el menú hamburguesa normal. */
 @media (min-width: 861px) {
   .site-header.is-compact .nav-links {
     position: static;
@@ -314,7 +321,6 @@ p {
   }
 }
 
-/* ---- Botones ---- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -344,17 +350,16 @@ p {
 
 .btn-secondary {
   background: transparent;
-  color: #f4f4f2; /* blanco fijo en modo oscuro, siempre legible */
+  color: #f4f4f2;
   border-color: var(--border);
 }
 
 .btn-secondary:hover {
-  background: var(--accent); /* mismo color que usan los rects (stars, process-index, etc.) */
+  background: var(--accent);
   border-color: var(--accent);
-  color: #f4f4f2; /* se mantiene blanco */
+  color: #f4f4f2;
 }
 
-/* Modo claro: espejo del comportamiento oscuro */
 [data-theme="light"] .btn-secondary {
   color: var(--text);
   border-color: var(--border);
@@ -363,11 +368,9 @@ p {
 [data-theme="light"] .btn-secondary:hover {
   background: #ffffff;
   border-color: #141414;
-  color: #141414; /* se mantiene negro sobre fondo blanco */
+  color: #141414;
 }
 
-/* Excepción: el botón secundario del hero va sobre la foto/video,
-   así que se mantiene blanco en modo claro también */
 [data-theme="light"] .hero-content .btn-secondary {
   color: #f4f4f2;
   border-color: rgba(244, 243, 242, 0.18);
@@ -386,7 +389,6 @@ p {
   margin-top: 2rem;
 }
 
-/* ---- Interruptor de tema ---- */
 .theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -418,7 +420,6 @@ p {
   display: block;
 }
 
-/* ---- Hero con video de fondo ---- */
 .hero {
   position: relative;
   min-height: 88vh;
@@ -442,13 +443,12 @@ p {
   object-fit: cover;
 }
 
-/* ---- Crossfade de videos del hero ---- */
 .hero-media video {
   position: absolute;
   top: 0;
   left: 0;
   opacity: 0;
-  transition: opacity 1.8s ease-in-out; /* fade lento */
+  transition: opacity 1.8s ease-in-out;
   z-index: 0;
 }
 
@@ -469,7 +469,7 @@ p {
   position: relative;
   z-index: 1;
   max-width: 640px;
-  /* Texto siempre claro: va sobre video oscuro en ambos temas */
+
   color: #f4f4f2;
 }
 
@@ -511,7 +511,6 @@ p {
   height: 13px;
 }
 
-/* ---- Barra de estadísticas ---- */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -531,7 +530,6 @@ p {
   max-width: 26ch;
 }
 
-/* ---- Grilla de tarjetas (servicios / proceso) ---- */
 .grid {
   display: grid;
   gap: 1.5rem;
@@ -547,8 +545,6 @@ p {
   will-change: transform;
 }
 
-/* El JS (initCardTilt) escribe --tilt-x/--tilt-y al mover el mouse
-   sobre la tarjeta; esta variable controla la inclinación 3D. */
 .card {
   transform: perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
 }
@@ -556,6 +552,10 @@ p {
 .card:hover {
   border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
   box-shadow: var(--shadow);
+}
+
+.plans-grid .card {
+  padding-inline: 2.25rem;
 }
 
 .card .eyebrow {
@@ -570,7 +570,6 @@ p {
   font-size: 0.95rem;
 }
 
-/* ---- Lista de servicios (sin tarjetas: separadores en vez de cajas) ---- */
 .service-list {
   border-top: 1px solid var(--border);
 }
@@ -620,14 +619,6 @@ p {
   }
 }
 
-/* ==========================================================
-   FONDO INTERACTIVO — "spotlight" que sigue el mouse sobre una
-   grilla de puntos. Se activa agregando class="intro-section"
-   y el atributo data-spotlight a cualquier <section>. El JS
-   (initSpotlight en script.js) actualiza --mx / --my al mover
-   el mouse; sin JS o con "reduce motion" queda un fondo fijo
-   igual de presentable (el spotlight simplemente no se mueve).
-   ========================================================== */
 .intro-section {
   position: relative;
   overflow: hidden;
@@ -653,7 +644,6 @@ p {
   }
 }
 
-/* ---- Aparición suave al hacer scroll ---- */
 .reveal {
   opacity: 0;
   transform: translateY(16px);
@@ -673,15 +663,6 @@ p {
   }
 }
 
-/* ==========================================================
-   BLOQUES DE SERVICIO / PROYECTO CON FOTO — usados en
-   servicios.html (.service-*) y proyectos.html (.project-*).
-   Comparten exactamente el mismo layout (imagen + texto,
-   alternando lados con .is-reversed) pero con nombres de clase
-   propios para que cada página se entienda sola. Si agregas un
-   servicio o proyecto nuevo, copia un bloque completo y ajusta
-   el índice/tag, el texto y la imagen.
-   ========================================================== */
 .service-block,
 .project-block {
   display: grid;
@@ -733,7 +714,6 @@ p {
   object-fit: cover;
 }
 
-/* Visual de reemplazo cuando todavía no hay foto/captura real */
 .service-visual-icon,
 .project-visual-icon {
   display: flex;
@@ -752,8 +732,6 @@ p {
   color: var(--accent-strong);
 }
 
-/* Aviso de "proyecto conceptual": misma idea que .eyebrow pero
-   con borde propio, para dejar clarísimo que no es un cliente real */
 .project-concept-note {
   display: inline-flex;
   align-items: center;
@@ -788,7 +766,6 @@ p {
   }
 }
 
-/* ---- Detalle de servicio: lista de "lo que incluye" ---- */
 .service-features {
   margin-top: 1rem;
   display: flex;
@@ -811,7 +788,6 @@ p {
   font-family: var(--font-mono);
 }
 
-/* ---- Contacto: tarjetas de contacto directo ---- */
 .contact-card-icon {
   display: inline-flex;
   align-items: center;
@@ -856,7 +832,6 @@ p {
   font-size: 1.6rem;
 }
 
-/* ---- Proceso (secuencia numerada: sí aplica, es un proceso real con orden) ---- */
 .process-list {
   display: flex;
   flex-direction: column;
@@ -880,7 +855,6 @@ p {
   font-size: 0.95rem;
 }
 
-/* ---- Tabs (tipos de sitio, con imagen) ---- */
 .tabs-nav {
   display: flex;
   flex-wrap: wrap;
@@ -948,7 +922,6 @@ p {
   margin-bottom: 1.5rem;
 }
 
-/* ---- Galería de proyectos ---- */
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -996,7 +969,6 @@ p {
   height: 12px;
 }
 
-/* ---- Testimonio / reseña ---- */
 .testimonial {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -1031,7 +1003,6 @@ p {
   color: var(--text-muted);
 }
 
-/* ---- FAQ (acordeón) ---- */
 .faq-list {
   border-top: 1px solid var(--border);
   max-width: 760px;
@@ -1085,7 +1056,6 @@ p {
   max-height: 320px;
 }
 
-/* ---- CTA final ---- */
 .cta {
   text-align: center;
 }
@@ -1099,7 +1069,6 @@ p {
   justify-content: center;
 }
 
-/* ---- Formulario de contacto (sección "Empecemos") ---- */
 .contact-form {
   max-width: 640px;
   margin-inline: auto;
@@ -1218,7 +1187,6 @@ p {
   text-underline-offset: 3px;
 }
 
-/* Honeypot: oculto para personas, sigue presente en el DOM para que los bots lo llenen y se descarte el envío. */
 .hp-field {
   position: absolute;
   left: -9999px;
@@ -1227,7 +1195,6 @@ p {
   overflow: hidden;
 }
 
-/* ---- Footer ---- */
 .site-footer {
   padding-block: 3rem 2.5rem;
 }
@@ -1327,7 +1294,6 @@ p {
   color: var(--text-muted);
 }
 
-/* ---- Responsive ---- */
 @media (max-width: 860px) {
   .nav-links {
     position: fixed;

@@ -1,11 +1,3 @@
-
-
-
-<!-- has lo q qeas-->
-<!-- mocsitos html-->
-
-
-
 <!DOCTYPE html>
 <html lang="es" data-theme="dark">
 <head>
@@ -20,14 +12,6 @@
 </head>
 <body>
 
-  <!-- ==========================================================
-       CABECERA — se repite igual en todas las páginas.
-       Copia este bloque completo al crear una página nueva y
-       solo ajusta cuál <a> lleva aria-current="page".
-       El logo (img/logo-placeholder.png) es temporal: reemplázalo
-       por tu archivo .png real manteniendo el mismo nombre y ruta,
-       o cambia el atributo src si usas otro nombre de archivo.
-       ========================================================== -->
   <header class="site-header">
     <div class="container nav">
       <a href="index.html" class="brand">
@@ -37,7 +21,7 @@
       <ul class="nav-links" data-nav-links>
         <li><a href="index.html" aria-current="page">Inicio</a></li>
         <li><a href="html/servicios.html">Servicios</a></li>
-        <li><a href="html/proyectos.html">Proyectos</a></li>
+        <li><a href="html/planes.html">Planes y precios</a></li>
         <li><a href="html/contacto.html">Contacto</a></li>
       </ul>
 
@@ -62,15 +46,10 @@
 
   <main>
 
-    <!-- ==========================================================
-         HERO CON VIDEO — reemplaza video/hero.mp4 por tu archivo.
-         Mientras no exista ese archivo, se ve el poster (imagen
-         de respaldo) que ya viene incluida en video/hero-poster.jpg.
-         ========================================================== -->
     <section class="hero">
       <div class="hero-media">
-        <video id="video-a" class="hero-video active" autoplay muted loop playsinline poster="video/hero-poster.jpg"></video>
-        <video id="video-b" class="hero-video" autoplay muted loop playsinline poster="video/hero-poster.jpg"></video>
+        <video id="video-a" class="hero-video active" autoplay muted loop playsinline webkit-playsinline poster="video/hero-poster.jpg"></video>
+        <video id="video-b" class="hero-video" autoplay muted loop playsinline webkit-playsinline poster="video/hero-poster.jpg"></video>
       </div>
 
       <div class="container">
@@ -80,7 +59,7 @@
           <p class="lead">Diseñamos y construimos la presencia digital de tu negocio con un proceso ordenado: primero la estructura, después la forma. Código limpio, tiempos definidos y resultados que se sostienen en el tiempo.</p>
           <div class="btn-row">
             <a href="#propuesta" class="btn btn-primary">Solicitar propuesta</a>
-            <a href="html/proyectos.html" class="btn btn-secondary">Hacer consultas (Whatsapp)</a>
+            <a href="html/planes.html" class="btn btn-secondary">Hacer consultas (Whatsapp)</a>
           </div>
 
           <div class="hero-rating">
@@ -97,9 +76,8 @@
       </div>
     </section>
 
-    <!-- ============ ESTADÍSTICAS ============ -->
     <section class="section">
-      <div class="container stats-grid">
+      <div class="container stats-grid stagger-group">
         <div class="reveal">
           <div class="stat-number">24h</div>
           <p class="stat-label">Tiempo de respuesta a tu primera consulta menos de 24 horas</p>
@@ -115,15 +93,14 @@
       </div>
     </section>
 
-    <!-- ============ SERVICIOS ============ -->
     <section class="section section--alt" id="servicios">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <span class="eyebrow">Qué hacemos</span>
           <h2>Un sitio para cada etapa del negocio.</h2>
         </div>
 
-        <div class="service-list">
+        <div class="service-list stagger-group">
           <div class="service-item reveal">
             <span class="service-tag">Sitios corporativos</span>
             <p>Presencia institucional clara, pensada para transmitir confianza y facilitar el contacto.</p>
@@ -151,14 +128,9 @@
       </div>
     </section>
 
-    <!-- ==========================================================
-         TABS "TIPOS DE SITIO" — cada botón [data-tab-target] muestra
-         el panel con el mismo [data-tab-panel]. Para agregar un tipo
-         más, copia un botón y su panel y usa un nombre nuevo.
-         ========================================================== -->
     <section class="section" data-tabs>
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <span class="eyebrow">Según tu negocio</span>
           <h2>Elige el punto de partida.</h2>
         </div>
@@ -204,18 +176,15 @@
       </div>
     </section>
 
-    <!-- ============ PROCESO ============ -->
-    <!-- intro-section + data-spotlight: la misma grilla de puntos con
-         spotlight que sigue el mouse usada en servicios.html/contacto.html,
-         acá para que esta sección (antes plana) no se sienta tan estática. -->
+    
     <section class="section intro-section" data-spotlight id="proceso">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <span class="eyebrow">Cómo trabajamos</span>
           <h2>Cuatro etapas, en este orden.</h2>
         </div>
 
-        <div class="process-list">
+        <div class="process-list stagger-group">
           <div class="process-item reveal">
             <span class="process-index">01</span>
             <div>
@@ -248,77 +217,32 @@
       </div>
     </section>
 
-    <!-- ==========================================================
-         GALERÍA — fotos y video de proyectos. Reemplaza las
-         imágenes en /img por capturas reales de tus trabajos.
-         ========================================================== -->
-    <!-- <section class="section" id="proyectos">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">Proyectos</span>
-          <h2>Algunos trabajos recientes.</h2>
-        </div>
+    
 
-        <div class="gallery-grid">
-          <a class="gallery-item" href="html/proyectos.html">
-            <img src="img/proyecto-01.jpg" alt="Proyecto: sitio corporativo" width="800" height="600">
-            <span class="gallery-caption">Sitio corporativo — estudio contable</span>
-          </a>
-          <a class="gallery-item" href="html/proyectos.html">
-            <img src="img/proyecto-02.jpg" alt="Proyecto: tienda online" width="800" height="600">
-            <span class="gallery-caption">Tienda online — cerámica artesanal</span>
-          </a>
-          <a class="gallery-item is-video" href="html/proyectos.html">
-            <img src="img/proyecto-03.jpg" alt="Proyecto: video de presentación" width="800" height="600">
-            <span class="gallery-caption">
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M6 4.5v11l9-5.5-9-5.5Z"/></svg>
-              Video de presentación — clínica dental
-            </span>
-          </a>
-          <a class="gallery-item" href="html/proyectos.html">
-            <img src="img/proyecto-04.jpg" alt="Proyecto: landing page" width="800" height="600">
-            <span class="gallery-caption">Landing page — lanzamiento de producto</span>
-          </a>
+    <section class="section section--alt about-section">
+      <div class="container about-block">
+        <div class="about-text reveal">
+          <span class="eyebrow">Quiénes somos</span>
+          <h2>Creamos sitios web modernos, rápidos y pensados para generar resultados.</h2>
+          <p class="lead">Somos un estudio independiente especializado en el diseño y desarrollo de sitios web modernos para empresas, emprendedores y marcas que buscan destacar en el mundo digital.</p>
+			<p class="lead">Trabajamos cada proyecto de forma personalizada, combinando diseño, funcionalidad, herramientas de IA y rendimiento para crear sitios web que transmitan confianza y representen la identidad de cada negocio.</p>
+			<p class="lead">Nuestro objetivo es ofrecer un proceso claro, cercano y profesional, acompañando a nuestros clientes desde la idea inicial hasta la publicación de un sitio web listo para crecer junto a su marca.</p>
         </div>
-
-        <div class="btn-row">
-          <a href="html/proyectos.html" class="btn btn-secondary">Ver todos los proyectos</a>
+        <div class="about-visual reveal">
+          <img src="img/logo-placeholder.png" alt="Logo de BlackBone" width="260" height="260">
         </div>
       </div>
-    </section> -->
+    </section>	
 
-    <!-- ============ RESEÑA ============ -->
-    <section class="section section--alt">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">Reseñas</span>
-          <h2>Lo que dicen quienes ya trabajaron con nosotros.</h2>
-        </div>
-
-        <div class="testimonial reveal">
-          <div class="testimonial-stars" aria-hidden="true">
-            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.47 5.6 6.03.56-4.56 4.03 1.36 5.9L10 14.7l-5.3 2.9 1.36-5.9L1.5 7.66l6.03-.56L10 1.5Z"/></svg>
-            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.47 5.6 6.03.56-4.56 4.03 1.36 5.9L10 14.7l-5.3 2.9 1.36-5.9L1.5 7.66l6.03-.56L10 1.5Z"/></svg>
-            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.47 5.6 6.03.56-4.56 4.03 1.36 5.9L10 14.7l-5.3 2.9 1.36-5.9L1.5 7.66l6.03-.56L10 1.5Z"/></svg>
-            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.47 5.6 6.03.56-4.56 4.03 1.36 5.9L10 14.7l-5.3 2.9 1.36-5.9L1.5 7.66l6.03-.56L10 1.5Z"/></svg>
-            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.47 5.6 6.03.56-4.56 4.03 1.36 5.9L10 14.7l-5.3 2.9 1.36-5.9L1.5 7.66l6.03-.56L10 1.5Z"/></svg>
-          </div>
-          <p class="testimonial-quote">"Buscábamos que nuestra tienda se viera profesional sin perder tiempo en configuraciones técnicas. El equipo de BlackBone entendió el negocio antes de mostrarnos un solo diseño."</p>
-          <p class="testimonial-author">Oscar Fuentes Vidal - Landing Page</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ PREGUNTAS FRECUENTES ============ -->
     <section class="section">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <span class="eyebrow">FAQ</span>
           <h2>Preguntas frecuentes sobre nuestras páginas web</h2>
         </div>
 
-        <div class="faq-list">
-          <div class="faq-item" data-faq-item>
+        <div class="faq-list stagger-group">
+          <div class="faq-item reveal" data-faq-item>
             <button class="faq-question" data-faq-question aria-expanded="false">
               ¿Cuánto tiempo toma un proyecto?
               <svg class="faq-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 4v12M4 10h12" stroke-linecap="round"/></svg>
@@ -328,7 +252,7 @@
             </div>
           </div>
 
-          <div class="faq-item" data-faq-item>
+          <div class="faq-item reveal" data-faq-item>
             <button class="faq-question" data-faq-question aria-expanded="false">
               ¿Puedo pedir cambios después de la entrega?
               <svg class="faq-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 4v12M4 10h12" stroke-linecap="round"/></svg>
@@ -338,7 +262,7 @@
             </div>
           </div>
 
-          <div class="faq-item" data-faq-item>
+          <div class="faq-item reveal" data-faq-item>
             <button class="faq-question" data-faq-question aria-expanded="false">
               ¿Trabajan con un presupuesto fijo?
               <svg class="faq-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 4v12M4 10h12" stroke-linecap="round"/></svg>
@@ -348,7 +272,7 @@
             </div>
           </div>
 
-          <div class="faq-item" data-faq-item>
+          <div class="faq-item reveal" data-faq-item>
             <button class="faq-question" data-faq-question aria-expanded="false">
               ¿El sitio queda listo para verse bien en el celular?
               <svg class="faq-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 4v12M4 10h12" stroke-linecap="round"/></svg>
@@ -361,61 +285,22 @@
       </div>
     </section>
 
-    <!-- ==========================================================
-         CTA FINAL — formulario de contacto real.
-         El formulario envía los datos directo al correo del equipo
-         usando FormSubmit (https://formsubmit.co), un servicio
-         gratuito que reenvía por email lo que se llena aquí, sin
-         necesitar backend propio.
-
-         Se usa un envío NATIVO del formulario (navegación normal de
-         página, no fetch/AJAX) a propósito: los bloqueadores de
-         anuncios/privacidad suelen interceptar peticiones fetch hacia
-         URLs con un correo en la ruta, pero casi nunca bloquean una
-         navegación normal de formulario. Por eso este método es más
-         confiable para todos los visitantes, tengan o no un bloqueador
-         instalado.
-
-         ACTIVACIÓN (una sola vez, obligatorio):
-         La primera vez que alguien complete y envíe este formulario,
-         FormSubmit manda un correo de confirmación a
-         blackbonecl@gmail.com con un link de "Activate Form" /
-         "Confirmar formulario". Hay que abrir ese correo y hacer
-         click en el link UNA vez para activar el envío a esa
-         dirección. Después de eso, todos los envíos llegan directo
-         a esa bandeja (el envío que disparó la activación no se
-         recupera solo: hay que volver a enviar el formulario una vez
-         confirmado).
-
-         Si en algún momento cambias el correo del equipo, edita el
-         valor dentro de la comilla de "action" más abajo:
-           action="https://formsubmit.co/TU-CORREO-AQUI"
-         y repite la activación con ese nuevo correo.
-         ========================================================== -->
     <section class="section section--alt cta" id="propuesta">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <span class="eyebrow">Empecemos</span>
           <h2>Cuéntanos qué necesita tu negocio.</h2>
           <p>Respondemos con una propuesta concreta: alcance, tiempos y costo, sin letra chica.</p>
         </div>
 
-        <form class="contact-form" id="contact-form" action="https://formsubmit.co/blackbonecl@gmail.com" method="POST" novalidate>
+        <form class="contact-form reveal" id="contact-form" action="https://formsubmit.co/blackbonecl@gmail.com" method="POST" novalidate>
 
-          <!-- Metadatos para FormSubmit: asunto del correo, formato de tabla,
-               "Responder a" = el correo que la persona escribió (para que
-               responder el correo en Gmail le llegue directo al cliente),
-               "_captcha=false" para saltar la pantalla intermedia de
-               confirmación de FormSubmit, y "_next" = a dónde volver en
-               nuestro propio sitio después de enviar (se completa con
-               JavaScript antes de enviar, según el dominio real). -->
           <input type="hidden" name="_subject" value="Nueva solicitud de propuesta — sitio web BlackBone">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_replyto" id="cf-replyto" value="">
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_next" id="cf-next" value="">
 
-          <!-- Honeypot anti-spam: campo invisible para personas, si un bot lo llena el envío se descarta. No borrar. -->
           <div class="hp-field" aria-hidden="true">
             <label for="cf-honey">No completar este campo</label>
             <input type="text" id="cf-honey" name="_honey" tabindex="-1" autocomplete="off">
@@ -473,9 +358,6 @@
 
   </main>
 
-  <!-- ==========================================================
-       PIE DE PÁGINA — igual en todas las páginas.
-       ========================================================== -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-columns">
@@ -497,7 +379,7 @@
 
         <nav class="footer-col">
           <h4>Empresa</h4>
-          <a href="html/proyectos.html">Proyectos</a>
+          <a href="html/planes.html">Planes y precios</a>
           <a href="html/contacto.html">Contacto</a>
           <a href="index.html#proceso">Cómo trabajamos</a>
         </nav>
@@ -507,9 +389,6 @@
           <div class="social-row">
             <a href="https://www.instagram.com/blackbone.sites/" target="_blank" rel="noopener" aria-label="Instagram">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
-            </a>
-            <a href="#" aria-label="LinkedIn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="7.5" y1="10" x2="7.5" y2="17"/><circle cx="7.5" cy="7" r="0.6" fill="currentColor"/><path d="M11.5 17v-4.5a2.3 2.3 0 0 1 4.6 0V17"/></svg>
             </a>
             <a href="https://wa.me/56900000000" target="_blank" rel="noopener" aria-label="WhatsApp">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 12a8 8 0 1 1-3.7-6.7"/><path d="M20 12 12 12"/></svg>
@@ -522,7 +401,7 @@
         <span class="footer-note">© 2026 BlackBone Chile</span>
         <nav class="footer-links">
           <a href="html/servicios.html">Servicios</a>
-          <a href="html/proyectos.html">Proyectos</a>
+          <a href="html/planes.html">Planes y precios</a>
           <a href="html/contacto.html">Contacto</a>
         </nav>
       </div>

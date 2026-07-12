@@ -6,11 +6,12 @@
 <title>Servicios — BlackBone</title>
 <meta name="description" content="Conoce los servicios de BlackBone: sitios corporativos, catálogos de productos, landing pages y mantenimiento.">
 <link rel="stylesheet" href="../css/styles.css">
+<link rel="icon" type="image/png" href="../img/favicon.png">
+<link rel="icon" href="../img/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
 </head>
 <body>
 
-  <!-- Mismo bloque de cabecera que index.html: solo cambia aria-current="page".
-       Como este archivo vive dentro de /html, las rutas llevan "../" al principio. -->
   <header class="site-header">
     <div class="container nav">
       <a href="../index.html" class="brand">
@@ -21,7 +22,7 @@
       <ul class="nav-links" data-nav-links>
         <li><a href="../index.html">Inicio</a></li>
         <li><a href="servicios.html" aria-current="page">Servicios</a></li>
-        <li><a href="proyectos.html">Proyectos</a></li>
+        <li><a href="planes.html">Planes y precios</a></li>
         <li><a href="contacto.html">Contacto</a></li>
       </ul>
 
@@ -46,26 +47,15 @@
 
   <main>
 
-    <!-- Encabezado simple de la página interior, en vez del hero con video de la home.
-         data-spotlight + class="intro-section" activan el fondo interactivo
-         (grilla de puntos + spotlight que sigue el mouse, ver script.js/styles.css). -->
     <section class="section intro-section" data-spotlight style="padding-block-end: 0;">
-      <div class="container section-head">
+      <div class="container section-head reveal">
         <span class="eyebrow">Servicios</span>
         <h1>Lo que construimos, en detalle.</h1>
         <p class="lead">Cada servicio parte del mismo principio: definir bien el problema antes de escribir una sola línea de código.</p>
       </div>
     </section>
 
-    <!-- ==========================================================
-         BLOQUES DE SERVICIO — uno por servicio, con su foto de
-         ejemplo (las mismas de la sección "Según tu negocio" del
-         index.html). Van alternando lado imagen/texto con
-         .is-reversed para que se lea más dinámico. "Mantenimiento"
-         no tiene foto propia todavía, así que usa un ícono en vez
-         de imagen — reemplázalo por una foto real cuando tengas una.
-         ========================================================== -->
-    <section class="section">
+    <section class="section section--alt">
       <div class="container">
 
         <div class="service-block reveal">
@@ -131,15 +121,9 @@
               <li>Soporte directo por WhatsApp o correo</li>
             </ul>
           </div>
-          <!-- Sin foto propia todavía: reemplaza este bloque por
-               <img src="../img/tu-foto.jpg" ...> dentro de
-               <div class="service-visual"> cuando tengas una. -->
+          
           <div class="service-visual">
-            <div class="service-visual-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
-                <path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 1 5.4-5.4l-3-3-3 3Z" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
+            <img src="../img/example4.png" alt="Ejemplo de mantenimiento: actualización de código" width="800" height="800">
           </div>
         </div>
 
@@ -148,7 +132,7 @@
 
     <section class="section cta">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <span class="eyebrow">¿No sabes cuál necesitas?</span>
           <h2>Conversemos primero, cotizamos después.</h2>
         </div>
@@ -181,7 +165,7 @@
 
         <nav class="footer-col">
           <h4>Empresa</h4>
-          <a href="proyectos.html">Proyectos</a>
+          <a href="planes.html">Planes y precios</a>
           <a href="contacto.html">Contacto</a>
           <a href="../index.html#proceso">Cómo trabajamos</a>
         </nav>
@@ -191,9 +175,6 @@
           <div class="social-row">
             <a href="https://www.instagram.com/blackbone.sites/" target="_blank" rel="noopener" aria-label="Instagram">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
-            </a>
-            <a href="#" aria-label="LinkedIn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="7.5" y1="10" x2="7.5" y2="17"/><circle cx="7.5" cy="7" r="0.6" fill="currentColor"/><path d="M11.5 17v-4.5a2.3 2.3 0 0 1 4.6 0V17"/></svg>
             </a>
             <a href="https://wa.me/56900000000" target="_blank" rel="noopener" aria-label="WhatsApp">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 12a8 8 0 1 1-3.7-6.7"/><path d="M20 12 12 12"/></svg>
@@ -206,7 +187,7 @@
         <span class="footer-note">© 2026 BlackBone — Estudio de sitios web</span>
         <nav class="footer-links">
           <a href="servicios.html">Servicios</a>
-          <a href="proyectos.html">Proyectos</a>
+          <a href="planes.html">Planes y precios</a>
           <a href="contacto.html">Contacto</a>
         </nav>
       </div>
