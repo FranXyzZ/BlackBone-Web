@@ -1,11 +1,22 @@
+
+
+
+<!-- has lo q qeas-->
+<!-- mocsitos html-->
+
+
+
 <!DOCTYPE html>
 <html lang="es" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BlackBone Chile</title>
+<title>BlackBone Chile ©</title>
 <meta name="description" content="BlackBone diseña y construye sitios web a medida: estructura clara, código ordenado y un proceso pensado para negocios reales.">
 <link rel="stylesheet" href="css/styles.css">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="icon" href="img/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 </head>
 <body>
 
@@ -64,11 +75,11 @@
 
       <div class="container">
         <div class="hero-content">
-          <span class="eyebrow">Estudio de desarrollo web</span>
+          <span class="eyebrow">Soluciones digitales, pensadas como ingeniería</span>
           <h1>Sitios web con estructura clara, no solo apariencia.</h1>
           <p class="lead">Diseñamos y construimos la presencia digital de tu negocio con un proceso ordenado: primero la estructura, después la forma. Código limpio, tiempos definidos y resultados que se sostienen en el tiempo.</p>
           <div class="btn-row">
-            <a href="html/contacto.html" class="btn btn-primary">Solicitar propuesta</a>
+            <a href="#propuesta" class="btn btn-primary">Solicitar propuesta</a>
             <a href="html/proyectos.html" class="btn btn-secondary">Hacer consultas (Whatsapp)</a>
           </div>
 
@@ -80,7 +91,7 @@
               <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.47 5.6 6.03.56-4.56 4.03 1.36 5.9L10 14.7l-5.3 2.9 1.36-5.9L1.5 7.66l6.03-.56L10 1.5Z"/></svg>
               <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.47 5.6 6.03.56-4.56 4.03 1.36 5.9L10 14.7l-5.3 2.9 1.36-5.9L1.5 7.66l6.03-.56L10 1.5Z"/></svg>
             </span>
-            excelencia en servicio
+            ¡Excelencia en servicio!
           </div>
         </div>
       </div>
@@ -105,7 +116,7 @@
     </section>
 
     <!-- ============ SERVICIOS ============ -->
-    <section class="section" id="servicios">
+    <section class="section section--alt" id="servicios">
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">Qué hacemos</span>
@@ -277,7 +288,7 @@
     </section> -->
 
     <!-- ============ RESEÑA ============ -->
-    <section class="section">
+    <section class="section section--alt">
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">Reseñas</span>
@@ -302,7 +313,7 @@
     <section class="section">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">Preguntas frecuentes</span>
+          <span class="eyebrow">FAQ</span>
           <h2>Preguntas frecuentes sobre nuestras páginas web</h2>
         </div>
 
@@ -350,17 +361,113 @@
       </div>
     </section>
 
-    <!-- ============ CTA FINAL ============ -->
-    <section class="section cta">
+    <!-- ==========================================================
+         CTA FINAL — formulario de contacto real.
+         El formulario envía los datos directo al correo del equipo
+         usando FormSubmit (https://formsubmit.co), un servicio
+         gratuito que reenvía por email lo que se llena aquí, sin
+         necesitar backend propio.
+
+         Se usa un envío NATIVO del formulario (navegación normal de
+         página, no fetch/AJAX) a propósito: los bloqueadores de
+         anuncios/privacidad suelen interceptar peticiones fetch hacia
+         URLs con un correo en la ruta, pero casi nunca bloquean una
+         navegación normal de formulario. Por eso este método es más
+         confiable para todos los visitantes, tengan o no un bloqueador
+         instalado.
+
+         ACTIVACIÓN (una sola vez, obligatorio):
+         La primera vez que alguien complete y envíe este formulario,
+         FormSubmit manda un correo de confirmación a
+         blackbonecl@gmail.com con un link de "Activate Form" /
+         "Confirmar formulario". Hay que abrir ese correo y hacer
+         click en el link UNA vez para activar el envío a esa
+         dirección. Después de eso, todos los envíos llegan directo
+         a esa bandeja (el envío que disparó la activación no se
+         recupera solo: hay que volver a enviar el formulario una vez
+         confirmado).
+
+         Si en algún momento cambias el correo del equipo, edita el
+         valor dentro de la comilla de "action" más abajo:
+           action="https://formsubmit.co/TU-CORREO-AQUI"
+         y repite la activación con ese nuevo correo.
+         ========================================================== -->
+    <section class="section section--alt cta" id="propuesta">
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">Empecemos</span>
           <h2>Cuéntanos qué necesita tu negocio.</h2>
           <p>Respondemos con una propuesta concreta: alcance, tiempos y costo, sin letra chica.</p>
         </div>
-        <div class="btn-row">
-          <a href="html/contacto.html" class="btn btn-primary">Escribir al equipo</a>
-        </div>
+
+        <form class="contact-form" id="contact-form" action="https://formsubmit.co/blackbonecl@gmail.com" method="POST" novalidate>
+
+          <!-- Metadatos para FormSubmit: asunto del correo, formato de tabla,
+               "Responder a" = el correo que la persona escribió (para que
+               responder el correo en Gmail le llegue directo al cliente),
+               "_captcha=false" para saltar la pantalla intermedia de
+               confirmación de FormSubmit, y "_next" = a dónde volver en
+               nuestro propio sitio después de enviar (se completa con
+               JavaScript antes de enviar, según el dominio real). -->
+          <input type="hidden" name="_subject" value="Nueva solicitud de propuesta — sitio web BlackBone">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_replyto" id="cf-replyto" value="">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" id="cf-next" value="">
+
+          <!-- Honeypot anti-spam: campo invisible para personas, si un bot lo llena el envío se descarta. No borrar. -->
+          <div class="hp-field" aria-hidden="true">
+            <label for="cf-honey">No completar este campo</label>
+            <input type="text" id="cf-honey" name="_honey" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="cf-nombre">Nombre</label>
+              <input type="text" id="cf-nombre" name="Nombre" autocomplete="name" required>
+              <span class="field-error"></span>
+            </div>
+            <div class="form-field">
+              <label for="cf-correo">Correo</label>
+              <input type="email" id="cf-correo" name="Correo" autocomplete="email" required>
+              <span class="field-error"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="cf-telefono">Teléfono o WhatsApp (opcional)</label>
+              <input type="tel" id="cf-telefono" name="Teléfono" autocomplete="tel">
+              <span class="field-error"></span>
+            </div>
+            <div class="form-field">
+              <label for="cf-servicio">Qué necesitas</label>
+              <select id="cf-servicio" name="Servicio" required>
+                <option value="" disabled selected>Selecciona una opción</option>
+                <option>Sitio corporativo</option>
+                <option>Catálogo de productos o servicios</option>
+                <option>Landing page</option>
+                <option>Mantenimiento</option>
+                <option>No estoy seguro</option>
+              </select>
+              <span class="field-error"></span>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="cf-mensaje">Cuéntanos qué necesita tu negocio</label>
+            <textarea id="cf-mensaje" name="Mensaje" rows="5" required></textarea>
+            <span class="field-error"></span>
+          </div>
+
+          <p class="form-status" data-form-status role="status" aria-live="polite"></p>
+
+          <div class="btn-row">
+            <button type="submit" class="btn btn-primary" data-form-submit>Enviar solicitud</button>
+          </div>
+
+          <p class="form-alt-contact">¿Prefieres otro medio? Escríbenos por <a href="html/contacto.html">WhatsApp, correo o Instagram</a>.</p>
+        </form>
       </div>
     </section>
 

@@ -2,7 +2,8 @@
    BLACKBONE — script compartido
    Este archivo lo referencian todas las páginas (index.html,
    html/servicios.html, y las que agregues). Contiene:
-   1) Interruptor de tema oscuro/claro
+   1) Interruptor de tema oscuro/claro (con detección automática
+      del tema del sistema operativo)
    2) Menú de navegación para móvil
    3) Tabs de "tipos de sitio" (con imagen)
    4) Acordeón de preguntas frecuentes
@@ -20,26 +21,63 @@ document.addEventListener('DOMContentLoaded', function () {
   initSpotlight();
   initCardTilt();
   initScrollReveal();
+  initContactForm();
 });
 
 /**
- * Alterna data-theme="light" / "dark" en <html>.
- * Nota: no se guarda en localStorage a propósito (para que el
- * archivo funcione igual dentro de vistas previas sin storage).
- * Si vas a alojar el sitio en tu propio hosting y quieres que
- * el modo elegido se recuerde entre visitas, se puede agregar
- * localStorage.setItem('theme', tema) aquí sin problema.
+ * Detecta automáticamente si el sistema operativo del usuario
+ * está en modo oscuro o claro (prefers-color-scheme) y lo aplica
+ * como tema inicial. El botón [data-theme-toggle] sigue
+ * funcionando para cambiarlo manualmente durante la visita.
+ *
+ * Si el usuario usa el botón, se marca "userOverride" para que,
+ * mientras siga en la página, su elección manual no se pise si
+ * el sistema cambia de tema en caliente (por ejemplo, si el
+ * computador pasa a modo oscuro automáticamente al anochecer).
+ *
+ * Nota: igual que antes, esto no se guarda en localStorage a
+ * propósito, así que al recargar la página vuelve a partir del
+ * tema del sistema. Si en algún momento quieres que se recuerde
+ * la elección manual entre visitas, se puede agregar
+ * localStorage.setItem('theme', tema) donde se indica más abajo.
  */
 function initThemeToggle() {
   var root = document.documentElement;
   var toggle = document.querySelector('[data-theme-toggle]');
+  var userOverride = false;
+
+  var darkQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+
+  function applyTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    if (toggle) toggle.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
+  }
+
+  // Tema inicial: el que tenga configurado el sistema operativo.
+  // Si el navegador no soporta matchMedia, se deja "dark" (el que
+  // ya estaba puesto por defecto en el <html> de cada página).
+  if (darkQuery) {
+    applyTheme(darkQuery.matches ? 'dark' : 'light');
+  }
+
+  // Si el sistema cambia de tema mientras la página sigue abierta
+  // (ej. modo oscuro automático del SO al anochecer), lo seguimos
+  // reflejando — pero solo si el usuario no lo cambió a mano.
+  if (darkQuery) {
+    darkQuery.addEventListener('change', function (e) {
+      if (userOverride) return;
+      applyTheme(e.matches ? 'dark' : 'light');
+    });
+  }
+
   if (!toggle) return;
 
   toggle.addEventListener('click', function () {
+    userOverride = true;
     var current = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
     var next = current === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    toggle.setAttribute('aria-pressed', next === 'light' ? 'true' : 'false');
+    applyTheme(next);
+    // localStorage.setItem('theme', next); // descomenta si quieres que se recuerde entre visitas
   });
 }
 
@@ -259,6 +297,143 @@ function initScrollReveal() {
   }, { threshold: 0.15 });
 
   items.forEach(function (item) { observer.observe(item); });
+}
+
+/**
+ * Formulario de contacto de la sección "Empecemos" (index.html).
+ * Valida los campos obligatorios en el navegador y deja que el
+ * propio navegador envíe el formulario de forma NATIVA (una
+ * navegación normal de página) a FormSubmit, que reenvía el
+ * contenido por correo al equipo. Se usa envío nativo en vez de
+ * fetch/AJAX a propósito: los bloqueadores de anuncios/privacidad
+ * suelen interceptar peticiones fetch hacia URLs con un correo en
+ * la ruta, pero casi nunca bloquean una navegación normal de
+ * formulario, así que este método funciona para todos los
+ * visitantes, tengan o no un bloqueador instalado.
+ *
+ * Como el envío es una navegación real, FormSubmit redirige de
+ * vuelta a esta misma página (usando el campo oculto "_next") con
+ * "?enviado=1" en la URL. Al cargar la página, si detectamos ese
+ * parámetro, mostramos el mensaje de éxito y hacemos scroll al
+ * formulario.
+ *
+ * IMPORTANTE: la primera vez que alguien envíe este formulario en
+ * producción, FormSubmit manda un correo de confirmación a la
+ * dirección configurada en "action" del <form> — hay que abrir ese
+ * correo y confirmar una sola vez para que los envíos empiecen a
+ * llegar (ver comentario junto al formulario en index.html).
+ */
+function initContactForm() {
+  var form = document.getElementById('contact-form');
+  if (!form) return;
+
+  var statusEl = form.querySelector('[data-form-status]');
+  var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function setFieldError(field, message) {
+    var wrapper = field.closest('.form-field');
+    if (!wrapper) return;
+    var errorEl = wrapper.querySelector('.field-error');
+    if (message) {
+      wrapper.classList.add('has-error');
+      if (errorEl) errorEl.textContent = message;
+    } else {
+      wrapper.classList.remove('has-error');
+      if (errorEl) errorEl.textContent = '';
+    }
+  }
+
+  // Valida todos los campos marcados como "required" en el HTML.
+  // Devuelve true si el formulario está listo para enviarse.
+  function validateForm() {
+    var valid = true;
+    var requiredFields = form.querySelectorAll('[required]');
+
+    requiredFields.forEach(function (field) {
+      var value = (field.value || '').trim();
+
+      if (!value) {
+        setFieldError(field, 'Este campo es obligatorio.');
+        valid = false;
+        return;
+      }
+
+      if (field.type === 'email' && !emailPattern.test(value)) {
+        setFieldError(field, 'Ingresa un correo válido.');
+        valid = false;
+        return;
+      }
+
+      setFieldError(field, null);
+    });
+
+    return valid;
+  }
+
+  // Limpia el error de un campo apenas el usuario empieza a corregirlo.
+  form.querySelectorAll('[required]').forEach(function (field) {
+    field.addEventListener('input', function () {
+      if (field.closest('.form-field').classList.contains('has-error')) {
+        setFieldError(field, null);
+      }
+    });
+  });
+
+  // Si al cargar la página venimos de un envío exitoso (FormSubmit
+  // nos redirigió de vuelta con "?enviado=1"), mostramos el mensaje
+  // de éxito y limpiamos la URL para que no quede el parámetro.
+  if (window.location.search.indexOf('enviado=1') !== -1) {
+    statusEl.textContent = '¡Listo! Recibimos tu mensaje, te respondemos dentro de las próximas 24 horas.';
+    statusEl.setAttribute('data-state', 'success');
+    form.reset();
+
+    var cleanUrl = window.location.pathname + window.location.hash;
+    window.history.replaceState(null, '', cleanUrl);
+
+    window.requestAnimationFrame(function () {
+      form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+
+  form.addEventListener('submit', function (e) {
+    // Honeypot: si este campo oculto viene lleno, es un bot.
+    // Se bloquea el envío en silencio, sin mostrar error al usuario.
+    var honey = form.querySelector('[name="_honey"]');
+    if (honey && honey.value) {
+      e.preventDefault();
+      return;
+    }
+
+    if (!validateForm()) {
+      e.preventDefault();
+      statusEl.textContent = 'Revisa los campos marcados antes de enviar.';
+      statusEl.setAttribute('data-state', 'error');
+      return;
+    }
+
+    // Copia el correo que escribió la persona al campo oculto "_replyto",
+    // así el correo que reciben en el equipo trae ese correo como
+    // "Responder a" y pueden contestarle directo con un clic.
+    var correoField = form.querySelector('#cf-correo');
+    var replyToField = form.querySelector('#cf-replyto');
+    if (correoField && replyToField) {
+      replyToField.value = correoField.value.trim();
+    }
+
+    // Arma la URL de vuelta a esta misma página (con el dominio real,
+    // sea localhost durante pruebas o el dominio final ya publicado),
+    // agregando "?enviado=1" para poder mostrar el mensaje de éxito.
+    var nextField = form.querySelector('#cf-next');
+    if (nextField) {
+      nextField.value = window.location.origin + window.location.pathname + '?enviado=1#propuesta';
+    }
+
+    statusEl.textContent = 'Enviando…';
+    statusEl.removeAttribute('data-state');
+
+    // No se llama e.preventDefault(): a partir de aquí el navegador
+    // envía el formulario de forma normal (navegación de página).
+  });
 }
 
 /**

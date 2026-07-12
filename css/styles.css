@@ -121,6 +121,19 @@ button:focus-visible {
   border-bottom: none;
 }
 
+/* ==========================================================
+   SECCIÓN ALTERNA — para romper la sensación de "todo plano"
+   en modo oscuro (y dar contraste sutil también en modo claro).
+   Agrega class="section section--alt" a las secciones que
+   quieras destacar un poco del fondo base. Se recomienda
+   alternar: normal, alt, normal, alt... sin usarla en secciones
+   que ya tienen su propio fondo especial (ej. intro-section
+   con el spotlight, o el hero con video).
+   ========================================================== */
+.section--alt {
+  background: var(--surface);
+}
+
 .section-head {
   max-width: 640px;
   margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
@@ -134,6 +147,17 @@ button:focus-visible {
   text-transform: uppercase;
   color:#ffffff;
   margin-bottom: 0.9rem;
+}
+
+/* En modo claro, el eyebrow pasa a oscuro para que se lea sobre fondo claro */
+[data-theme="light"] .eyebrow {
+  color: var(--text);
+}
+
+/* Excepción: el eyebrow del hero va sobre el video (siempre oscuro),
+   así que se mantiene blanco incluso en modo claro */
+[data-theme="light"] .hero-content .eyebrow {
+  color: #ffffff;
 }
 
 h1, h2, h3 {
@@ -332,7 +356,7 @@ p {
 
 /* Modo claro: espejo del comportamiento oscuro */
 [data-theme="light"] .btn-secondary {
-  color: #ffffff; 
+  color: var(--text);
   border-color: var(--border);
 }
 
@@ -340,6 +364,19 @@ p {
   background: #ffffff;
   border-color: #141414;
   color: #141414; /* se mantiene negro sobre fondo blanco */
+}
+
+/* Excepción: el botón secundario del hero va sobre la foto/video,
+   así que se mantiene blanco en modo claro también */
+[data-theme="light"] .hero-content .btn-secondary {
+  color: #f4f4f2;
+  border-color: rgba(244, 243, 242, 0.18);
+}
+
+[data-theme="light"] .hero-content .btn-secondary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #f4f4f2;
 }
 
 .btn-row {
@@ -1060,6 +1097,134 @@ p {
 
 .cta .btn-row {
   justify-content: center;
+}
+
+/* ---- Formulario de contacto (sección "Empecemos") ---- */
+.contact-form {
+  max-width: 640px;
+  margin-inline: auto;
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  text-align: left;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.contact-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .contact-form .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-field label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem 0.9rem;
+  transition: border-color 0.2s ease;
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: var(--font-body);
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.form-field .field-error {
+  min-height: 1.1em;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: #c0524a;
+  display: none;
+}
+
+.form-field.has-error input,
+.form-field.has-error select,
+.form-field.has-error textarea {
+  border-color: #c0524a;
+}
+
+.form-field.has-error .field-error {
+  display: block;
+}
+
+.form-status {
+  min-height: 1.4rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.form-status[data-state="success"] {
+  color: #4a8f6b;
+}
+
+.form-status[data-state="error"] {
+  color: #c0524a;
+}
+
+.contact-form .btn-row {
+  justify-content: flex-start;
+}
+
+.contact-form button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-alt-contact {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.form-alt-contact a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Honeypot: oculto para personas, sigue presente en el DOM para que los bots lo llenen y se descarte el envío. */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 /* ---- Footer ---- */
