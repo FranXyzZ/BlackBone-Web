@@ -541,17 +541,43 @@ p {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.75rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  position: relative;
+  z-index: 1;
+  transform: scale(var(--card-scale, 1));
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.3s ease;
   will-change: transform;
 }
 
-.card {
-  transform: perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+.card:hover {
+  --card-scale: 1.03;
+  z-index: 2;
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.28),
+    0 25px 55px -10px rgba(0, 0, 0, 0.35);
 }
 
-.card:hover {
-  border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
-  box-shadow: var(--shadow);
+[data-theme="light"] .card:hover {
+  box-shadow:
+    0 8px 20px rgba(20, 20, 20, 0.1),
+    0 25px 55px -10px rgba(20, 20, 20, 0.18);
+}
+
+/* .card siempre viene junto con .reveal en el HTML; esta regla combinada
+   asegura que el translateY de la animación de entrada y el scale del
+   hover convivan en el mismo transform, en vez de pisarse entre sí. */
+.card.reveal {
+  transform: translateY(var(--reveal-shift, 0)) scale(var(--card-scale, 1));
+  transition: opacity 0.5s ease,
+              transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.3s ease;
+}
+
+.plans-grid {
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
 }
 
 .plans-grid .card {
@@ -645,20 +671,21 @@ p {
 }
 
 .reveal {
+  --reveal-shift: 16px;
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(var(--reveal-shift));
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .reveal.is-visible {
+  --reveal-shift: 0px;
   opacity: 1;
-  transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal {
+    --reveal-shift: 0px;
     opacity: 1;
-    transform: none;
     transition: none;
   }
 }
