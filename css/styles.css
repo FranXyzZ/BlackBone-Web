@@ -576,45 +576,203 @@ p {
               border-color 0.3s ease;
 }
 
-.plans-grid {
-  grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
+.plans-container {
+  max-width: 1360px;
+  padding-inline: clamp(1.5rem, 6vw, 4rem);
 }
 
-.plans-grid .card {
-  padding-inline: 2.25rem;
+.plans-grid {
+  grid-template-columns: 1fr;
+  row-gap: 2.25rem;
+}
+
+@media (min-width: 640px) {
+  .plans-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1000px) {
+  .plans-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* La tarjeta de Mantenimiento (5ta) siempre queda centrada,
+   sea cual sea la cantidad de columnas visibles. */
+.plans-grid .card:last-child {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .plans-grid .card:last-child {
+    max-width: calc(50% - 0.9375rem);
+  }
+}
+
+@media (min-width: 1000px) {
+  .plans-grid .card:last-child {
+    max-width: calc(25% - 1.40625rem);
+  }
+}
+
+.plan-card {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 22px;
+  padding: 2.25rem 1.75rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.plan-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 55%);
+  pointer-events: none;
 }
 
 @media (max-width: 480px) {
-  .plans-grid .card {
-    padding-inline: 1.5rem;
+  .plan-card {
+    padding: 2rem 1.5rem 1.5rem;
   }
+}
+
+.plan-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0 auto 1.1rem;
+  border-radius: 50%;
+  background: linear-gradient(160deg, var(--accent), var(--accent-strong));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+.plan-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0;
+}
+
+.plan-icon svg {
+  width: 22px;
+  height: 22px;
+  color: var(--accent-contrast);
+}
+
+.plan-price-block {
+  margin: 1.1rem 0 1.4rem;
+  padding-bottom: 1.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.plan-price-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.3rem;
 }
 
 .plan-price {
   font-family: var(--font-display);
-  font-size: 1.6rem;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.1;
   color: var(--accent-strong);
-  margin: 0.25rem 0 1.25rem;
+  margin: 0;
 }
 
 .plan-price .plan-price-note {
   display: block;
   font-family: var(--font-body);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  font-weight: 400;
   color: var(--text-muted);
-  margin-top: 0.3rem;
+  margin-top: 0.4rem;
 }
 
-.card .eyebrow {
-  margin-bottom: 1.25rem;
+.plan-body {
+  flex: 1;
+  text-align: left;
 }
 
-.card h3 {
+.plan-group-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
   margin-bottom: 0.6rem;
 }
 
-.card p {
-  font-size: 0.95rem;
+.plan-features {
+  list-style: none;
+  margin: 0 0 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.plan-features li {
+  position: relative;
+  padding-left: 1.4rem;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.plan-features li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-weight: 600;
+  color: var(--accent-strong);
+}
+
+.plan-perk {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  margin-bottom: 1.1rem;
+  text-align: center;
+}
+
+.btn-plan {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: auto;
+  background: linear-gradient(160deg, var(--accent), var(--accent-strong));
+  color: var(--accent-contrast);
+  border: none;
+  border-radius: 999px;
+  padding: 0.8rem 1.25rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.btn-plan:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.28);
 }
 
 .service-list {
@@ -867,6 +1025,47 @@ p {
   justify-content: center;
 }
 
+.whatsapp-float {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: #25D366;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+  z-index: 999;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.whatsapp-float:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4);
+}
+
+.whatsapp-float svg {
+  width: 28px;
+  height: 28px;
+}
+
+@media (max-width: 480px) {
+  .whatsapp-float {
+    right: 1rem;
+    bottom: 1rem;
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+
+  .whatsapp-float svg {
+    width: 25px;
+    height: 25px;
+  }
+}
+
 .contact-note {
   display: flex;
   align-items: baseline;
@@ -878,6 +1077,12 @@ p {
 
 .contact-note .stat-number {
   font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.contact-note .stat-label {
+  max-width: none;
+  flex: 1;
 }
 
 .process-list {
